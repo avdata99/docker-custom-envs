@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+
+  ckan-dev:
+    container_name: ckan
+    build:
+      context: ckan/
+      dockerfile: Dockerfile.dev.gsa
+      args:
+        - TZ=UTC
+    env_file:
+      - .env.gsa
+    links:
+      - db
+      - solr
+      - redis
+      - datapusher
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src:/srv/app/src_extensions
+      - ckan_storage:/var/lib/ckan
+      # debug extensions
+      - /home/hudson/dev/datopian/ckan-and-exts/ckanext-harvest:/srv/app/src_extensions/ckanext-harvest
+      - /home/hudson/dev/datopian/ckan-and-exts/ckanext-spatial:/srv/app/src_extensions/ckanext-spatial
+      - /home/hudson/dev/datopian/ckan-and-exts/datopian-ckanext-datajson:/srv/app/src_extensions/ckanext-datajson
+      - /home/hudson/dev/datopian/ckan-and-exts/datopian-ckanext-geodatagov:/srv/app/src_extensions/ckanext-geodatagov
+
+  datapusher:
+    container_name: datapusher
+    build:
+      context: datapusher/
+    ports:
+      - "8800:8800"
+
+  db:
+    container_name: db
+    env_file:
+      - .env.gsa
+    build:
+      context: postgresql/
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  solr:
+    container_name: solr
+    build:
+      context: solr/
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/opt/solr/server/solr/ckan/data/index
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+volumes:
+  ckan_storage:
+  pg_data:
+  solr_data:
