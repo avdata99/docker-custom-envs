@@ -2,8 +2,7 @@ version: "3"
 
 services:
 
-  ckan-dev:
-    container_name: ckan
+  ckan:
     build:
       context: ckan/
       dockerfile: Dockerfile.dev.gsa
@@ -19,13 +18,15 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./src:/srv/app/src_extensions
       - ckan_storage:/var/lib/ckan
+      - ./src:/srv/app/src_extensions
       # debug extensions
-      - /home/hudson/dev/datopian/ckan-and-exts/ckanext-harvest:/srv/app/src_extensions/ckanext-harvest
-      - /home/hudson/dev/datopian/ckan-and-exts/ckanext-spatial:/srv/app/src_extensions/ckanext-spatial
-      - /home/hudson/dev/datopian/ckan-and-exts/datopian-ckanext-datajson:/srv/app/src_extensions/ckanext-datajson
-      - /home/hudson/dev/datopian/ckan-and-exts/datopian-ckanext-geodatagov:/srv/app/src_extensions/ckanext-geodatagov
+      # # - /home/hudson/dev/datopian/ckan-and-exts/gsa-ckanext-harvest:/srv/app/src_extensions/ckanext-harvest
+      # - /home/hudson/dev/datopian/ckan-and-exts/ckanext-harvest:/srv/app/src_extensions/ckanext-harvest
+      # - /home/hudson/dev/datopian/ckan-and-exts/gsa-ckanext-datajson:/srv/app/src_extensions/ckanext-datajson
+      # - /home/hudson/dev/datopian/ckan-and-exts/ckanext-spatial:/srv/app/src_extensions/ckanext-spatial
+      # - /home/hudson/dev/datopian/ckan-and-exts/gsa-ckanext-geodatagov:/srv/app/src_extensions/ckanext-geodatagov
+      - /home/hudson/dev/datopian/ckan-and-exts/ckanext-datagovtheme:/srv/app/src_extensions/ckanext-datagovtheme
 
   datapusher:
     container_name: datapusher
