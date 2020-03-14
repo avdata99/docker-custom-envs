@@ -1,0 +1,33 @@
+FROM openknowledge/ckan-dev:2.8
+
+MAINTAINER Andres Vazquez <andres.vazquez@datopian.com>
+
+# Set timezone
+ARG TZ
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
+RUN echo $TZ > /etc/timezone
+
+RUN pip install --no-cache-dir git+https://github.com/datopian/ckanext-s3filestore.git@v0.1.2#egg=ckanext-s3filestore && \
+    pip install --no-cache-dir -r https://raw.githubusercontent.com/datopian/ckanext-s3filestore/v0.1.2/requirements.txt && \
+    # Pages
+    pip install --no-cache-dir -e git+https://github.com/keitaroinc/ckanext-pages.git@pages-ckan-2.8#egg=ckanext-pages && \
+    # Disqus
+    # pip install --no-cache-dir -e git+https://github.com/ckan/ckanext-disqus.git#egg=ckanext-disqus && \
+    # GA
+    # pip install --no-cache-dir -e git+https://github.com/ckan/ckanext-googleanalytics.git#egg=ckanext-googleanalytics && \
+    # pip install --no-cache-dir -r https://raw.githubusercontent.com/ckan/ckanext-googleanalytics/master/requirements.txt && \
+    # Datopian Data Explorer which is fork of Keitaro's one.
+    pip install --no-cache-dir -e git+https://github.com/datopian/ckanext-dataexplorer.git#egg=ckanext-dataexplorer && \
+    pip install --no-cache-dir -r https://raw.githubusercontent.com/datopian/ckanext-dataexplorer/master/requirements.txt && \
+    # Datopian's XLoader branch
+    pip install --no-cache-dir -e git+https://github.com/datopian/ckanext-xloader.git@feature/nhs-remote-hook#egg=ckanext-xloader && \
+    pip install --no-cache-dir -r https://raw.githubusercontent.com/datopian/ckanext-xloader/feature/nhs-remote-hook/requirements.txt && \
+    # Install scheming extension from a pull request that contains fix for retaining "extra" fields for package
+    pip install --no-cache-dir -e git+https://github.com/ckan/ckanext-scheming.git@refs/pull/229/head#egg=ckanext-scheming && \
+    pip install --no-cache-dir -r https://raw.githubusercontent.com/ckan/ckanext-scheming/master/requirements.txt && \
+    pip install --no-cache-dir -e git+https://github.com/open-data/ckanext-repeating.git#egg=ckanext-repeating && \
+    pip install --no-cache-dir -e git+https://github.com/EnviDat/ckanext-composite.git#egg=ckanext-composite && \
+    # Install 'restricted' extension from our fork that has been aligned for our use case
+    pip install --no-cache-dir -e git+https://github.com/anuveyatsu/ckanext-restricted.git#egg=ckanext-restricted
+
+COPY docker-entrypoint.d/nhs/* /docker-entrypoint.d/
