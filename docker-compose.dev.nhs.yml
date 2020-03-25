@@ -20,9 +20,9 @@ services:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
       # debug extensions
-      - /home/hudson/dev/datopian/nhs/nhs:/srv/app/src_extensions/ckanext-nhs
-      - /home/hudson/dev/datopian/nhs/ckanext-dataexplorer:/srv/app/src_extensions/ckanext-dataexplorer
-
+      - /home/michael/dev/datopian/nhs/nhs:/srv/app/src_extensions/ckanext-nhs
+      - /home/michael/dev/datopian/nhs/ckanext-dataexplorer:/srv/app/src_extensions/ckanext-dataexplorer
+      - /home/michael/dev/datopian/nhs/ckanext-security:/srv/app/src_extensions/ckanext-security
   db:
     container_name: db
     env_file:

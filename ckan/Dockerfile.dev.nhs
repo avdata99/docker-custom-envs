@@ -6,6 +6,7 @@ MAINTAINER Andres Vazquez <andres.vazquez@datopian.com>
 ARG TZ
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 RUN echo $TZ > /etc/timezone
+COPY who.ini ${APP_DIR}
 
 RUN pip install --no-cache-dir git+https://github.com/datopian/ckanext-s3filestore.git@v0.1.2#egg=ckanext-s3filestore && \
     pip install --no-cache-dir -r https://raw.githubusercontent.com/datopian/ckanext-s3filestore/v0.1.2/requirements.txt && \
@@ -28,6 +29,8 @@ RUN pip install --no-cache-dir git+https://github.com/datopian/ckanext-s3filesto
     pip install --no-cache-dir -e git+https://github.com/open-data/ckanext-repeating.git#egg=ckanext-repeating && \
     pip install --no-cache-dir -e git+https://github.com/EnviDat/ckanext-composite.git#egg=ckanext-composite && \
     # Install 'restricted' extension from our fork that has been aligned for our use case
-    pip install --no-cache-dir -e git+https://github.com/anuveyatsu/ckanext-restricted.git#egg=ckanext-restricted
+    pip install --no-cache-dir -e git+https://github.com/anuveyatsu/ckanext-restricted.git#egg=ckanext-restricted && \
+    # Install security extension from our fork that has been aligned for our use case
+    pip install --no-cache-dir -e git+https://github.com/datopian/ckanext-security.git#egg=ckanext-security
 
 COPY docker-entrypoint.d/nhs/* /docker-entrypoint.d/
